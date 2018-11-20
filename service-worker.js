@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/kohrongying/hex-to-rgba/precache-manifest.bc80e335ac0559a5885e97dbe63059e3.js"
+  "/hex-to-rgba/precache-manifest.1f4b2d61dd229010ab476f3eaf12c6ae.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/kohrongying/hex-to-rgba/index.html", {
+workbox.routing.registerNavigationRoute("/hex-to-rgba/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });

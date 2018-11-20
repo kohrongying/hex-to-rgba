@@ -1,13 +1,13 @@
 {
-  "main.css": "/kohrongying/hex-to-rgba/static/css/main.ff9bad25.chunk.css",
-  "main.js": "/kohrongying/hex-to-rgba/static/js/main.65a15778.chunk.js",
-  "main.js.map": "/kohrongying/hex-to-rgba/static/js/main.65a15778.chunk.js.map",
-  "static/js/1.d97ceed4.chunk.js": "/kohrongying/hex-to-rgba/static/js/1.d97ceed4.chunk.js",
-  "static/js/1.d97ceed4.chunk.js.map": "/kohrongying/hex-to-rgba/static/js/1.d97ceed4.chunk.js.map",
-  "runtime~main.js": "/kohrongying/hex-to-rgba/static/js/runtime~main.bd764f79.js",
-  "runtime~main.js.map": "/kohrongying/hex-to-rgba/static/js/runtime~main.bd764f79.js.map",
-  "static/css/main.ff9bad25.chunk.css.map": "/kohrongying/hex-to-rgba/static/css/main.ff9bad25.chunk.css.map",
-  "index.html": "/kohrongying/hex-to-rgba/index.html",
-  "precache-manifest.bc80e335ac0559a5885e97dbe63059e3.js": "/kohrongying/hex-to-rgba/precache-manifest.bc80e335ac0559a5885e97dbe63059e3.js",
-  "service-worker.js": "/kohrongying/hex-to-rgba/service-worker.js"
+  "main.css": "/hex-to-rgba/static/css/main.ff9bad25.chunk.css",
+  "main.js": "/hex-to-rgba/static/js/main.d234ebf9.chunk.js",
+  "main.js.map": "/hex-to-rgba/static/js/main.d234ebf9.chunk.js.map",
+  "static/js/1.a07b8f00.chunk.js": "/hex-to-rgba/static/js/1.a07b8f00.chunk.js",
+  "static/js/1.a07b8f00.chunk.js.map": "/hex-to-rgba/static/js/1.a07b8f00.chunk.js.map",
+  "runtime~main.js": "/hex-to-rgba/static/js/runtime~main.0a8dbc97.js",
+  "runtime~main.js.map": "/hex-to-rgba/static/js/runtime~main.0a8dbc97.js.map",
+  "static/css/main.ff9bad25.chunk.css.map": "/hex-to-rgba/static/css/main.ff9bad25.chunk.css.map",
+  "index.html": "/hex-to-rgba/index.html",
+  "precache-manifest.1f4b2d61dd229010ab476f3eaf12c6ae.js": "/hex-to-rgba/precache-manifest.1f4b2d61dd229010ab476f3eaf12c6ae.js",
+  "service-worker.js": "/hex-to-rgba/service-worker.js"
 }
