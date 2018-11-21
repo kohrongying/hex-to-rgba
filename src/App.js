@@ -14,8 +14,9 @@ const Wrapper = styled.section`
 
 const Input = styled.input`
   background-color: transparent;
+  color: ${props => props.darkMode ? "white" : "black"};
   border-style: none;
-  border-bottom: black solid 1px;
+  border-bottom: ${props => props.darkMode ? "white" : "black"} solid 1px;
   font-size: 20px;
   text-align: center;
   padding: 5px 20px;
@@ -29,15 +30,15 @@ const Input = styled.input`
 const Button = styled.button`
   font-size: large;
   background: transparent;
-  color: white;
+  color: ${props => props.darkMode ? "white" : "black"};
   padding: 10px;
-  border: 1px solid white;
+  border: 1px solid ${props => props.darkMode ? "white" : "black"};
   border-radius: 5px;
   position: absolute;
   top: 5%;
   &:hover {
-    background: white;
-    color: black;
+    background: ${props => props.darkMode ? "white" : "black"};
+    color: ${props => props.darkMode ? "black" : "white"};
   }
   &:focus {
     outline: none;
@@ -69,6 +70,7 @@ class App extends Component {
       rgba: 'rgba(255,0,255,1.0)',
       bg: '#ff00ffff',
       showShades: false,
+      darkMode: false,
     }
     this.handleButtonClick = this.handleButtonClick.bind(this)
     this.handleHexChange = this.handleHexChange.bind(this)
@@ -85,9 +87,11 @@ class App extends Component {
     console.log(e.target.value)
     console.log(this.checkValidHex(e.target.value))
     if (this.checkValidHex(e.target.value)) {
+      const rgba = this.hex2rgba(e.target.value)
       this.setState({
         bg: e.target.value,
-        rgba: this.hex2rgba(e.target.value)
+        rgba: rgba,
+        darkMode: this.checkDarkMode(rgba)
       })
     }     
     this.setState({
@@ -114,7 +118,8 @@ class App extends Component {
     if (this.checkValidRGBA(e.target.value)) {
       this.setState({
         bg: e.target.value,
-        hex: this.rgba2hex(e.target.value)
+        hex: this.rgba2hex(e.target.value),
+        darkMode: this.checkDarkMode(e.target.value)
       })
     }
     this.setState({
@@ -146,12 +151,20 @@ class App extends Component {
     return `#${rr}${gg}${bb}${aa}`
   }
 
+  checkDarkMode = (rgba) => {
+    const [r, g, b, a] = rgba.slice(5,-1).split(',')
+    const val = parseInt(r) * 299 + parseInt(g) * 587 + parseInt(b) * 114 / 1000
+    return val < 123 ? true : false
+  }
+
   render() {
     return (
       <Wrapper bg={this.state.bg}>
         <Button
           onClick={this.handleButtonClick}
+          darkMode={this.state.darkMode}
         >Show Shades</Button>
+
         { this.state.showShades ? (
           <div>
           <Container left={0}>
@@ -178,11 +191,14 @@ class App extends Component {
           type="text" 
           onChange={this.handleHexChange}
           value={this.state.hex}
-          maxLength={9} />
+          maxLength={9}
+          darkMode={this.state.darkMode}
+        />
         <RGBAInput 
           type="text"
           onChange={this.handleRGBAChange}
           value={this.state.rgba}
+          darkMode={this.state.darkMode}
         />
       </Wrapper>
     );
