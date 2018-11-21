@@ -2,9 +2,8 @@ I found out color hex codes have transparency support in the last two digits out
 
 So I built my own.
 
+#### Converts Hex to RGBA and vice versa.
+#### Show shades of colors related to the main.
+
 ![Demo](ss1.png)
-
-Beware of pink screen! 
-May be a little buggy.
-
-To include shades of the color in an upcoming update!
+![Shades](ss2.png)
