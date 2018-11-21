@@ -1,4 +1,4 @@
-I found out color hex codes have transparency support in the last two digits out of the 8 digits. But I couldn't ge the transparency to convert. 
+I found out color hex codes have transparency support in the last two digits out of the 8 digits. But I couldn't get the transparency to convert. 
 
 So I built my own.
 
