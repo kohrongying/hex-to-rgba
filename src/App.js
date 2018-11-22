@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 const Wrapper = styled.section`
   width: 100vw;
@@ -58,6 +59,7 @@ const Box = styled.div`
   background: ${props => props.bg};
   width: 100%;
   height: 20%;
+  z-index: 999;
 `;
 const HexInput = Input 
 const RGBAInput = Input
@@ -69,12 +71,13 @@ class App extends Component {
       hex: '#ff00ffff',
       rgba: 'rgba(255,0,255,1.0)',
       bg: '#ff00ffff',
-      showShades: false,
+      showShades: true,
       darkMode: false,
     }
     this.handleButtonClick = this.handleButtonClick.bind(this)
     this.handleHexChange = this.handleHexChange.bind(this)
     this.handleRGBAChange = this.handleRGBAChange.bind(this)
+    this.copyToClipboard = this.copyToClipboard.bind(this)
   }
 
   handleButtonClick = (e) => {
@@ -157,6 +160,33 @@ class App extends Component {
     return val < 123 ? true : false
   }
 
+  copyToClipboard = (e) => {
+    const el = document.createElement('textarea');
+    el.value = this.convertToRGB(e.target.dataset.layer)
+    el.setAttribute('readonly', '');
+    el.style = {position: 'absolute', left: '-9999px'};
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+
+  convertToRGB = (layer) => {
+    const source = this.convertToRGBAObj(layer)
+    const bg = this.convertToRGBAObj(this.state.rgba)
+    console.log('source', source)
+    console.log('bg', bg)
+    const r = Math.round(((1-source.a) * bg.r) + (source.a * source.r))
+    const g = Math.round(((1-source.a) * bg.g) + (source.a * source.g))
+    const b = Math.round(((1-source.a) * bg.b) + (source.a * source.b))
+    return `rgb(${r}, ${g}, ${b})`
+  }
+
+  convertToRGBAObj = (rgba) => {
+    const [r, g, b, a] = rgba.slice(5,-1).split(',')
+    return {r:r, g:g, b:b, a:a}
+  }
+
   render() {
     return (
       <Wrapper bg={this.state.bg}>
@@ -168,18 +198,19 @@ class App extends Component {
         { this.state.showShades ? (
           <div>
           <Container left={0}>
-            <Box bg={'rgba(255,255,255,0.1)'}></Box>
-            <Box bg={'rgba(255,255,255,0.2)'}></Box>
-            <Box bg={'rgba(255,255,255,0.3)'}></Box>
-            <Box bg={'rgba(255,255,255,0.4)'}></Box>
-            <Box bg={'rgba(255,255,255,0.5)'}></Box>
+            
+            <Box bg={'rgba(255,255,255,0.1)'} data-layer={'rgba(255,255,255,0.1)'} onClick={this.copyToClipboard}></Box>
+            <Box bg={'rgba(255,255,255,0.2)'} data-layer={'rgba(255,255,255,0.2)'} onClick={this.copyToClipboard}></Box>
+            <Box bg={'rgba(255,255,255,0.3)'} data-layer={'rgba(255,255,255,0.3)'} onClick={this.copyToClipboard}></Box>
+            <Box bg={'rgba(255,255,255,0.4)'} data-layer={'rgba(255,255,255,0.4)'} onClick={this.copyToClipboard}></Box>
+            <Box bg={'rgba(255,255,255,0.5)'} data-layer={'rgba(255,255,255,0.5)'} onClick={this.copyToClipboard}></Box>
           </Container>
           <Container left={'90%'}>
-            <Box bg={'rgba(0,0,0,0.1)'}></Box>
-            <Box bg={'rgba(0,0,0,0.2)'}></Box>
-            <Box bg={'rgba(0,0,0,0.3)'}></Box>
-            <Box bg={'rgba(0,0,0,0.4)'}></Box>
-            <Box bg={'rgba(0,0,0,0.5)'}></Box>
+            <Box bg={'rgba(0,0,0,0.1)'} data-layer={'rgba(0,0,0,0.1)'} onClick={this.copyToClipboard}></Box>
+            <Box bg={'rgba(0,0,0,0.2)'} data-layer={'rgba(0,0,0,0.2)'} onClick={this.copyToClipboard}></Box>
+            <Box bg={'rgba(0,0,0,0.3)'} data-layer={'rgba(0,0,0,0.3)'} onClick={this.copyToClipboard}></Box>
+            <Box bg={'rgba(0,0,0,0.4)'} data-layer={'rgba(0,0,0,0.4)'} onClick={this.copyToClipboard}></Box>
+            <Box bg={'rgba(0,0,0,0.5)'} data-layer={'rgba(0,0,0,0.5)'} onClick={this.copyToClipboard}></Box>
           </Container>
           </div>
         ) : (
