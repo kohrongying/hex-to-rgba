@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Switch from './Switch';
+import Shades from './Shades';
 
 const Wrapper = styled.section`
   width: 100vw;
@@ -28,6 +29,9 @@ const Input = styled.input`
   }
 `;
 
+const HexInput = Input 
+const RGBAInput = Input
+
 const Button = styled.button`
   font-size: large;
   background: transparent;
@@ -46,24 +50,6 @@ const Button = styled.button`
   }
 `;
 
-const Container = styled.div`
-  background-color: transparent;
-  height: 100vh;
-  width: 10%;
-  position: absolute;
-  left: ${props => props.left}
-  top: 0;
-`;
-
-const Box = styled.div`
-  background: ${props => props.bg};
-  width: 100%;
-  height: 20%;
-  z-index: 999;
-`;
-const HexInput = Input 
-const RGBAInput = Input
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -77,7 +63,6 @@ class App extends Component {
     this.handleButtonClick = this.handleButtonClick.bind(this)
     this.handleHexChange = this.handleHexChange.bind(this)
     this.handleRGBAChange = this.handleRGBAChange.bind(this)
-    this.copyToClipboard = this.copyToClipboard.bind(this)
   }
 
   handleButtonClick = (e) => {
@@ -87,8 +72,6 @@ class App extends Component {
   }
 
   handleHexChange = (e) => {
-    console.log(e.target.value)
-    console.log(this.checkValidHex(e.target.value))
     if (this.checkValidHex(e.target.value)) {
       const rgba = this.hex2rgba(e.target.value)
       this.setState({
@@ -97,9 +80,7 @@ class App extends Component {
         darkMode: this.checkDarkMode(rgba)
       })
     }     
-    this.setState({
-      hex: e.target.value
-    })
+    this.setState({ hex: e.target.value })
   }
 
   checkValidHex = (hex) => {
@@ -118,6 +99,8 @@ class App extends Component {
   }
 
   handleRGBAChange = (e) => {
+    console.log(e.target.value)
+    console.log(this.checkValidRGBA(e.target.value))
     if (this.checkValidRGBA(e.target.value)) {
       this.setState({
         bg: e.target.value,
@@ -125,14 +108,20 @@ class App extends Component {
         darkMode: this.checkDarkMode(e.target.value)
       })
     }
-    this.setState({
-      rgba: e.target.value,
-    })
-    
+    this.setState({ rgba: e.target.value })
   }
 
   checkValidRGBA = (rgba) => {
-    const [r, g, b, a] = rgba.slice(5,-1).split(',')
+    let r = 0; 
+    let g = 0; 
+    let b = 0;
+    let a = 0;
+    if (rgba.slice(0,4) === "rgba") {
+      const [r, g, b, a] = rgba.slice(5,-1).split(',')
+    } else {
+      const [r, g, b] = rgba.slice(4,-1).split(',')
+      a = 1
+    }
     return (
       this.inRange(r, 255) && 
       this.inRange(g, 255) && 
@@ -146,45 +135,24 @@ class App extends Component {
   }
 
   rgba2hex = (rgba) => {
-    const [r, g, b, a] = rgba.slice(5,-1).split(',')
-    const rr = parseInt(r).toString(16).padStart(2, '0')
-    const gg = parseInt(g).toString(16).padStart(2, '0')
-    const bb = parseInt(b).toString(16).padStart(2, '0')
-    const aa = Math.round((parseFloat(a) * 255)).toString(16).padStart(2, '0')
-    return `#${rr}${gg}${bb}${aa}`
+    if (rgba.slice(0,4) === "rgba") {
+      const [r, g, b, a] = rgba.slice(5,-1).split(',')
+      const rr = parseInt(r).toString(16).padStart(2, '0')
+      const gg = parseInt(g).toString(16).padStart(2, '0')
+      const bb = parseInt(b).toString(16).padStart(2, '0')
+      const aa = Math.round((parseFloat(a) * 255)).toString(16).padStart(2, '0')
+      return `#${rr}${gg}${bb}${aa}`
+    } else {
+        const [r, g, b] = rgba.slice(4,-1).split(',')
+                              .map(i => parseInt(i).toString(16).padStart(2, '0'))
+        return `#${r}${g}${b}`                      
+    }
   }
 
   checkDarkMode = (rgba) => {
     const [r, g, b, a] = rgba.slice(5,-1).split(',')
     const val = parseInt(r) * 299 + parseInt(g) * 587 + parseInt(b) * 114 / 1000
     return val < 123 ? true : false
-  }
-
-  copyToClipboard = (e) => {
-    const el = document.createElement('textarea');
-    el.value = this.convertToRGB(e.target.dataset.layer)
-    el.setAttribute('readonly', '');
-    el.style = {position: 'absolute', left: '-9999px'};
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-  }
-
-  convertToRGB = (layer) => {
-    const source = this.convertToRGBAObj(layer)
-    const bg = this.convertToRGBAObj(this.state.rgba)
-    console.log('source', source)
-    console.log('bg', bg)
-    const r = Math.round(((1-source.a) * bg.r) + (source.a * source.r))
-    const g = Math.round(((1-source.a) * bg.g) + (source.a * source.g))
-    const b = Math.round(((1-source.a) * bg.b) + (source.a * source.b))
-    return `rgb(${r}, ${g}, ${b})`
-  }
-
-  convertToRGBAObj = (rgba) => {
-    const [r, g, b, a] = rgba.slice(5,-1).split(',')
-    return {r:r, g:g, b:b, a:a}
   }
 
   render() {
@@ -194,30 +162,11 @@ class App extends Component {
           onClick={this.handleButtonClick}
           darkMode={this.state.darkMode}
         >Show Shades</Button>
-
+        <Switch></Switch>
         { this.state.showShades ? (
-          <div>
-          <Container left={0}>
-            
-            <Box bg={'rgba(255,255,255,0.1)'} data-layer={'rgba(255,255,255,0.1)'} onClick={this.copyToClipboard}></Box>
-            <Box bg={'rgba(255,255,255,0.2)'} data-layer={'rgba(255,255,255,0.2)'} onClick={this.copyToClipboard}></Box>
-            <Box bg={'rgba(255,255,255,0.3)'} data-layer={'rgba(255,255,255,0.3)'} onClick={this.copyToClipboard}></Box>
-            <Box bg={'rgba(255,255,255,0.4)'} data-layer={'rgba(255,255,255,0.4)'} onClick={this.copyToClipboard}></Box>
-            <Box bg={'rgba(255,255,255,0.5)'} data-layer={'rgba(255,255,255,0.5)'} onClick={this.copyToClipboard}></Box>
-          </Container>
-          <Container left={'90%'}>
-            <Box bg={'rgba(0,0,0,0.1)'} data-layer={'rgba(0,0,0,0.1)'} onClick={this.copyToClipboard}></Box>
-            <Box bg={'rgba(0,0,0,0.2)'} data-layer={'rgba(0,0,0,0.2)'} onClick={this.copyToClipboard}></Box>
-            <Box bg={'rgba(0,0,0,0.3)'} data-layer={'rgba(0,0,0,0.3)'} onClick={this.copyToClipboard}></Box>
-            <Box bg={'rgba(0,0,0,0.4)'} data-layer={'rgba(0,0,0,0.4)'} onClick={this.copyToClipboard}></Box>
-            <Box bg={'rgba(0,0,0,0.5)'} data-layer={'rgba(0,0,0,0.5)'} onClick={this.copyToClipboard}></Box>
-          </Container>
-          </div>
-        ) : (
-          <div></div> 
-        )
-          
-        }
+          <Shades rgba={this.state.rgba}/>
+        ) : (<div></div>)}
+
         <HexInput 
           type="text" 
           onChange={this.handleHexChange}
