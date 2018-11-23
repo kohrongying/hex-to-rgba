@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-
-
 
 const Container = styled.div`
   background-color: transparent;
@@ -27,13 +25,20 @@ class Shades extends React.Component {
   
   copyToClipboard = (e) => {
     const el = document.createElement('textarea');
-    el.value = this.convertToRGB(e.target.dataset.layer)
+    const rgb = this.convertToRGB(e.target.dataset.layer)
+    el.value = this.props.copyHex ? this.rgb2hex(rgb) : rgb;
     el.setAttribute('readonly', '');
     el.style = {position: 'absolute', left: '-9999px'};
     document.body.appendChild(el);
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
+  }
+
+  rgb2hex = (rgb) => {
+    const [r, g, b] = rgb.slice(4,-1).split(',')
+                          .map(i => parseInt(i).toString(16).padStart(2, '0'))
+    return `#${r}${g}${b}`                      
   }
   
   convertToRGB = (layer) => {

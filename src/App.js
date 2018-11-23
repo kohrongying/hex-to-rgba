@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Switch from './Switch';
-import Shades from './Shades';
+import Switch from './components/Switch';
+import Shades from './components/Shades';
 
 const Wrapper = styled.section`
   width: 100vw;
@@ -59,10 +59,12 @@ class App extends Component {
       bg: '#ff00ffff',
       showShades: true,
       darkMode: false,
+      isHexCopied: true
     }
     this.handleButtonClick = this.handleButtonClick.bind(this)
     this.handleHexChange = this.handleHexChange.bind(this)
     this.handleRGBAChange = this.handleRGBAChange.bind(this)
+    
   }
 
   handleButtonClick = (e) => {
@@ -155,6 +157,13 @@ class App extends Component {
     return val < 123 ? true : false
   }
 
+  toggleCopyMode = (e) => {
+    this.setState(prevState => ({
+      isHexCopied: !prevState.isHexCopied
+    }), ()=>{console.log(this.state.isHexCopied)})
+    
+  }
+
   render() {
     return (
       <Wrapper bg={this.state.bg}>
@@ -162,9 +171,11 @@ class App extends Component {
           onClick={this.handleButtonClick}
           darkMode={this.state.darkMode}
         >Show Shades</Button>
-        <Switch></Switch>
+
+        <Switch toggle={this.toggleCopyMode}></Switch>
+
         { this.state.showShades ? (
-          <Shades rgba={this.state.rgba}/>
+          <Shades rgba={this.state.rgba} copyHex={this.state.isHexCopied}/>
         ) : (<div></div>)}
 
         <HexInput 
