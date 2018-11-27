@@ -11,13 +11,9 @@ const Box = styled.div`
 `;
 
 class Shade extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			showPopup: false
-		}
-		this.copyToClipboard = this.copyToClipboard.bind(this)
-	}
+  state = {
+    showPopup: false
+  }
 	
 	copyToClipboard = (e) => {
 		const el = document.createElement('textarea');
@@ -42,8 +38,6 @@ class Shade extends React.Component {
 	convertToRGB = (layer) => {
 		const source = this.convertToRGBAObj(layer)
 		const bg = this.convertToRGBAObj(this.props.rgba)
-		console.log('source', source)
-		console.log('bg', bg)
 		const r = Math.round(((1-source.a) * bg.r) + (source.a * source.r))
 		const g = Math.round(((1-source.a) * bg.g) + (source.a * source.g))
 		const b = Math.round(((1-source.a) * bg.b) + (source.a * source.b))

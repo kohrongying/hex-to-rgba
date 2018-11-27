@@ -51,20 +51,13 @@ const Button = styled.button`
 `;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hex: '#ff00ffff',
-      rgba: 'rgba(255,0,255,1.0)',
-      bg: '#ff00ffff',
-      showShades: true,
-      darkMode: false,
-      isHexCopied: true
-    }
-    this.handleButtonClick = this.handleButtonClick.bind(this)
-    this.handleHexChange = this.handleHexChange.bind(this)
-    this.handleRGBAChange = this.handleRGBAChange.bind(this)
-    
+  state = {
+    hex: '#ff00ffff',
+    rgba: 'rgba(255,0,255,1.0)',
+    bg: '#ff00ffff',
+    showShades: true,
+    darkMode: false,
+    isHexCopied: true
   }
 
   handleButtonClick = (e) => {
@@ -101,8 +94,6 @@ class App extends Component {
   }
 
   handleRGBAChange = (e) => {
-    console.log(e.target.value)
-    console.log(this.checkValidRGBA(e.target.value))
     if (this.checkValidRGBA(e.target.value)) {
       this.setState({
         bg: e.target.value,
@@ -160,8 +151,7 @@ class App extends Component {
   toggleCopyMode = (e) => {
     this.setState(prevState => ({
       isHexCopied: !prevState.isHexCopied
-    }), ()=>{console.log(this.state.isHexCopied)})
-    
+    }))
   }
 
   render() {
