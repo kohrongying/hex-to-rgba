@@ -46,7 +46,7 @@ const InvalidColor = (props) => {
       <Container>
         {Object.keys(Colors).map((color, index) => {
           return(
-            <Button bg={Colors[color][4]} href={color} key={index}>
+            <Button bg={Colors[color][4]} href={process.env.PUBLIC_URL+'/'+color} key={index}>
               {color}
             </Button>
           )

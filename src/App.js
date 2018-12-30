@@ -6,10 +6,10 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 class App extends Component {
   render() {
     return (
-      <Router basename="/hex-to-rgba">
+      <Router basename={process.env.PUBLIC_URL}>
         <div>
-          <Route path="/" exact component={Converter} />
-          <Route path="/:color/" component={Palette} />
+          <Route path={process.env.PUBLIC_URL + '/'} exact component={Converter} />
+          <Route path={process.env.PUBLIC_URL + '/:color'} component={Palette} />
         </div>
       </Router>
     );
