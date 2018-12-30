@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../colors';
 import { hex2rgba, checkValidHex, rgba2hex, checkValidRGBA, checkDarkMode } from '../helpers';
+import InvalidColor from './InvalidColor';
 
 const Wrapper = styled.section`
   width: 100vw;
@@ -57,17 +58,26 @@ class Palette extends Component {
     rgba: 'rgba(255,255,255,1.0)',
     bg: '#ffffffff',
     darkMode: false,
-    colors: []
+    colors: [],
+    invalidColor: false,
+    color: ''
   }
   
   componentDidMount(){
     const color = this.props.match.params.color.toLowerCase()
-    this.setState({ 
-      colors: Colors[color],
-      hex: Colors[color][4],
-      rgba: hex2rgba(Colors[color][4]),
-      bg: Colors[color][4]
-    })
+    this.setState({ color })
+    const colors = Colors[color]
+    if (colors == null) {
+      this.setState({ invalidColor: true })
+    } else {
+      this.setState({ 
+        colors: colors,
+        hex: colors[4],
+        rgba: hex2rgba(colors[4]),
+        bg: colors[4]
+      })
+    }
+    
   }
 
   handleHexChange = (e) => {
@@ -103,7 +113,11 @@ class Palette extends Component {
 
   render(){
     return (
-      <Wrapper bg={this.state.bg}>
+      <div>
+      {this.state.invalidColor ? (
+        <InvalidColor color={this.state.color} />
+      ) : (
+        <Wrapper bg={this.state.bg}>
         <HexInput 
           type="text" 
           onChange={this.handleHexChange}
@@ -130,7 +144,9 @@ class Palette extends Component {
             )
           })}
         </PaletteItems>
-    </Wrapper>
+        </Wrapper>
+      )}
+      </div>  
     )
   }  
 }
