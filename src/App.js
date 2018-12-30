@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 class App extends Component {
   render() {
     return (
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router>
         <div>
           <Route path={process.env.PUBLIC_URL + '/'} exact component={Converter} />
           <Route path={process.env.PUBLIC_URL + '/:color'} component={Palette} />
