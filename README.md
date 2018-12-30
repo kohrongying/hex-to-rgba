@@ -24,5 +24,14 @@ Find a palette of nice material ui colors by appending the color behind the url.
 If you get lost, the 404 page will show a list of colors! 
 ![404](ss4.png)
 
+#### Add color to custom palette
+
+![Add to Palette](ss5.png)
+Under the main page or the palette pages, you're able to add the color to a custom palette. 
+
+
+![MyPalette](ss6.png)
+View / delete your palette!
+
 ### Deploy to GH Pages
 ```npm run deploy```
