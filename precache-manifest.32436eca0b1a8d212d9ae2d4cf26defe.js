@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/hex-to-rgba/static/css/main.dcb037b0.chunk.css"
   },
   {
-    "revision": "1ab8ad9db741a7958a37d21e1e87f954",
+    "revision": "3ac28d27e5c1e9c4064816a21d8399f0",
     "url": "/hex-to-rgba/index.html"
   }
 ];

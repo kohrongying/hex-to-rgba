@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/hex-to-rgba/precache-manifest.020b5edad2254b17e5a4f4fe070db93f.js"
+  "/hex-to-rgba/precache-manifest.32436eca0b1a8d212d9ae2d4cf26defe.js"
 );
 
 workbox.clientsClaim();
