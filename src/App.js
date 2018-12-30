@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 class App extends Component {
   render() {
     return (
-      <Router>
+      <Router basename="/hex-to-rgba">
         <div>
           <Route path="/" exact component={Converter} />
           <Route path="/:color/" component={Palette} />

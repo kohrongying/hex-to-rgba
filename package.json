@@ -2,7 +2,7 @@
   "name": "hex-to-rgba",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://kohrongying.github.io/hex-to-rgba/",
+  "homepage": "https://kohrongying.github.io/hex-to-rgba",
   "dependencies": {
     "gh-pages": "^2.0.1",
     "react": "^16.6.1",
