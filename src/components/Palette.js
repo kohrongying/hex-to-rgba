@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Colors } from '../colors';
 import { hex2rgba, checkValidHex, rgba2hex, checkValidRGBA, checkDarkMode } from '../helpers';
 import InvalidColor from './InvalidColor';
+import { ReactComponent as Hamburger }  from '../svg/hamburger.svg';
+import SideBar from './SideBar';
 
 const Wrapper = styled.section`
   width: 100vw;
@@ -52,6 +54,31 @@ const PaletteItem = styled.div`
   }
 `;
 
+const AddButton = styled.button`
+  font-size: large;
+  background: transparent;
+  color: ${props => props.darkMode ? "white" : "black"};
+  padding: 10px;
+  border: 1px solid ${props => props.darkMode ? "white" : "black"};
+  border-radius: 5px;  
+  &:hover {
+    background: ${props => props.darkMode ? "white" : "black"};
+    color: ${props => props.darkMode ? "black" : "white"};
+  }
+  &:focus {
+    outline: none;
+  }
+  margin-top: 10px;
+`;
+
+const styles = {
+  hamburger: {
+    position: 'absolute',
+    top: 20,
+    left: 20
+  }
+}
+
 class Palette extends Component {
   state = {
     hex: '#ffffffff',
@@ -60,7 +87,9 @@ class Palette extends Component {
     darkMode: false,
     colors: [],
     invalidColor: false,
-    color: ''
+    color: '',
+    showSideBar: false,
+    myPalette: []
   }
   
   componentDidMount(){
@@ -77,7 +106,9 @@ class Palette extends Component {
         bg: colors[4]
       })
     }
-    
+
+    const myPalette = localStorage.getItem("kry-myPalette") ? JSON.parse(localStorage.getItem("kry-myPalette")) : []
+    this.setState({ myPalette })
   }
 
   handleHexChange = (e) => {
@@ -111,6 +142,22 @@ class Palette extends Component {
     })
   }
 
+  addToPalette = () => {
+    let myPalette = localStorage.getItem("kry-myPalette") ? JSON.parse(localStorage.getItem("kry-myPalette")) : []
+    myPalette.push(this.state.bg)
+    myPalette = [...new Set(myPalette)]
+    localStorage.setItem('kry-myPalette', JSON.stringify(myPalette));
+    this.setState({ myPalette })
+  }
+
+  showSideBar = () => {
+    this.setState({ showSideBar: true })
+  }
+
+  closeSideBar = () => {
+    this.setState({ showSideBar: false })
+  }
+
   render(){
     return (
       <div>
@@ -118,32 +165,40 @@ class Palette extends Component {
         <InvalidColor color={this.state.color} />
       ) : (
         <Wrapper bg={this.state.bg}>
-        <HexInput 
-          type="text" 
-          onChange={this.handleHexChange}
-          value={this.state.hex}
-          maxLength={9}
-          darkMode={this.state.darkMode}
-        />
-        <RGBAInput 
-          type="text"
-          onChange={this.handleRGBAChange}
-          value={this.state.rgba}
-          darkMode={this.state.darkMode}
-        />
+          <Hamburger style={styles.hamburger} onClick={this.showSideBar} />
+          { this.state.showSideBar ? (
+            <SideBar close={this.closeSideBar} myPalette={this.state.myPalette} />
+          ) : null }
+          <HexInput 
+            type="text" 
+            onChange={this.handleHexChange}
+            value={this.state.hex}
+            maxLength={9}
+            darkMode={this.state.darkMode}
+          />
+          <RGBAInput 
+            type="text"
+            onChange={this.handleRGBAChange}
+            value={this.state.rgba}
+            darkMode={this.state.darkMode}
+          />
+          <AddButton
+            onClick={this.addToPalette}
+            darkMode={this.state.darkMode}
+          >Add to My Palette</AddButton>
 
-        <PaletteItems>
-          {this.state.colors.map((item, index) => {
-            return(
-              <PaletteItem 
-                bg={item} 
-                key={index} 
-                onClick={this.onClickItem}>
-                {item}
-              </PaletteItem>
-            )
-          })}
-        </PaletteItems>
+          <PaletteItems>
+            {this.state.colors.map((item, index) => {
+              return(
+                <PaletteItem 
+                  bg={item} 
+                  key={index} 
+                  onClick={this.onClickItem}>
+                  {item}
+                </PaletteItem>
+              )
+            })}
+          </PaletteItems>
         </Wrapper>
       )}
       </div>  

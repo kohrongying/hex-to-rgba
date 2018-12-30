@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Switch from './Switch';
 import Shades from './Shades';
 import { hex2rgba, checkValidHex, rgba2hex, checkValidRGBA, checkDarkMode } from '../helpers';
+import { ReactComponent as Hamburger }  from '../svg/hamburger.svg';
+import SideBar from './SideBar';
 
 const Wrapper = styled.section`
   width: 100vw;
@@ -38,9 +40,7 @@ const Button = styled.button`
   color: ${props => props.darkMode ? "white" : "black"};
   padding: 10px;
   border: 1px solid ${props => props.darkMode ? "white" : "black"};
-  border-radius: 5px;
-  position: absolute;
-  top: 5%;
+  border-radius: 5px;  
   &:hover {
     background: ${props => props.darkMode ? "white" : "black"};
     color: ${props => props.darkMode ? "black" : "white"};
@@ -50,14 +50,37 @@ const Button = styled.button`
   }
 `;
 
+const ShowButton = styled(Button)`
+  top: 5%;
+  position: absolute;
+`;
+
+const AddButton = styled(Button)`
+  margin-top: 10px;
+`;
+
+const styles = {
+  hamburger: {
+    position: 'absolute',
+    top: 20,
+    left: 20
+  }
+}
 class Converter extends Component {
   state = {
     hex: '#ff00ffff',
     rgba: 'rgba(255,0,255,1.0)',
     bg: '#ff00ffff',
-    showShades: true,
+    showShades: false,
     darkMode: false,
-    isHexCopied: true
+    isHexCopied: true,
+    showSideBar: false,
+    myPalette: []
+  }
+  
+  componentDidMount() {
+    const myPalette = localStorage.getItem("kry-myPalette") ? JSON.parse(localStorage.getItem("kry-myPalette")) : []
+    this.setState({ myPalette })
   }
 
   handleButtonClick = (e) => {
@@ -95,13 +118,34 @@ class Converter extends Component {
     }))
   }
 
+  addToPalette = () => {
+    let myPalette = localStorage.getItem("kry-myPalette") ? JSON.parse(localStorage.getItem("kry-myPalette")) : []
+    myPalette.push(this.state.bg)
+    myPalette = [...new Set(myPalette)]
+    localStorage.setItem('kry-myPalette', JSON.stringify(myPalette));
+    this.setState({ myPalette })
+  }
+
+  showSideBar = () => {
+    this.setState({ showSideBar: true })
+  }
+
+  closeSideBar = () => {
+    this.setState({ showSideBar: false })
+  }
+
   render() {
     return (
       <Wrapper bg={this.state.bg}>
-        <Button
+        <Hamburger style={styles.hamburger} onClick={this.showSideBar} />
+        { this.state.showSideBar ? (
+          <SideBar close={this.closeSideBar} myPalette={this.state.myPalette} />
+        ) : null }
+
+        <ShowButton
           onClick={this.handleButtonClick}
           darkMode={this.state.darkMode}
-        >Show Shades</Button>
+        >Show Shades</ShowButton>
 
         <Switch toggle={this.toggleCopyMode}></Switch>
 
@@ -122,6 +166,11 @@ class Converter extends Component {
           value={this.state.rgba}
           darkMode={this.state.darkMode}
         />
+
+        <AddButton
+          onClick={this.addToPalette}
+          darkMode={this.state.darkMode}
+        >Add to My Palette</AddButton>
       </Wrapper>
     );
   }
